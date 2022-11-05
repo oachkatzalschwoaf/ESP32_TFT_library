@@ -15,7 +15,12 @@
 #include "freertos/task.h"
 
 #include "tft.h"
-#include "spiffs_vfs.h"
+
+
+#include <esp_system.h>
+#include <esp_log.h>
+#include <esp_attr.h>
+#include <esp_ota_ops.h>
 
 #ifdef CONFIG_EXAMPLE_USE_WIFI
 
@@ -24,6 +29,7 @@
 #include "esp_sntp.h"
 #include "esp_log.h"
 #include "nvs_flash.h"
+#include "esp_heap_caps.h"
 
 #endif
 
@@ -372,7 +378,7 @@ static void disp_images() {
     uint32_t tstart;
 
 	disp_header("JPEG IMAGES");
-
+/*
 	if (spiffs_is_mounted) {
 		// ** Show scaled (1/8, 1/4, 1/2 size) JPG images
 		TFT_jpg_image(CENTER, CENTER, 3, SPIFFS_BASE_PATH"/images/test1.jpg", NULL, 0);
@@ -407,6 +413,7 @@ static void disp_images() {
 		Wait(-GDEMO_INFO_TIME);
 	}
 	else if (doprint) printf("  No file system found.\r\n");
+	*/
 }
 
 //---------------------
@@ -432,7 +439,7 @@ static void font_demo()
 	sprintf(tmp_buff, "%d STRINGS", n);
 	update_header(NULL, tmp_buff);
 	Wait(-GDEMO_INFO_TIME);
-
+/*
 	if (spiffs_is_mounted) {
 		disp_header("FONT FROM FILE DEMO");
 
@@ -462,7 +469,7 @@ static void font_demo()
 		}
 		tft_text_wrap = 0;
 	}
-
+*/
 	disp_header("ROTATED FONT DEMO");
 
 	end_time = clock() + GDEMO_TIME;
@@ -1292,6 +1299,31 @@ void app_main()
 
     // ====================================================================================================================
 
+	esp_chip_info_t chip_info;
+	esp_chip_info(&chip_info);
+
+	uint8_t macSta[6];
+	uint8_t macAp[6];
+	esp_read_mac(macSta, ESP_MAC_WIFI_STA);
+	esp_read_mac(macAp, ESP_MAC_WIFI_SOFTAP);
+
+	const esp_app_desc_t *app = esp_ota_get_app_description();
+
+	ESP_LOGI(" ", "\r\n");
+	ESP_LOGI("xxx", "       ##########################################");
+	ESP_LOGI("xxx", "                      %s", app->project_name);
+	ESP_LOGI("xxx", "              %s %s", app->date, app->time);
+	ESP_LOGI("xxx", "	            %s rev %d", CONFIG_IDF_TARGET, chip_info.revision);
+	ESP_LOGI("xxx", "     %s Flash-Size: %d MB", (chip_info.features & CHIP_FEATURE_EMB_FLASH) ? "embedded" : "external", spi_flash_get_chip_size() / (1024 * 1024));
+	ESP_LOGI("xxx", "                      FW: v%s  ", app->version);
+	ESP_LOGI("xxx", "             SDK version:%s", app->idf_ver);
+	ESP_LOGI("xxx", "                 MAC-STA: %02x:%02x:%02x:%02x:%02x:%02x", macSta[0], macSta[1], macSta[2], macSta[3], macSta[4], macSta[5]);
+	ESP_LOGI("xxx", "                 MAC-AP : %02x:%02x:%02x:%02x:%02x:%02x", macAp[0], macAp[1], macAp[2], macAp[3], macAp[4], macAp[5]);
+
+	ESP_LOGI("xxx", "       ##########################################\r\n");
+	ESP_LOGI(" ", " ");
+
+
 
     vTaskDelay(500 / portTICK_RATE_MS);
 	printf("\r\n==============================\r\n");
@@ -1418,15 +1450,11 @@ void app_main()
 	TFT_print("Initializing SPIFFS...", CENTER, CENTER);
     // ==== Initialize the file system ====
     printf("\r\n\n");
-	vfs_spiffs_register();
-    if (!spiffs_is_mounted) {
+	
+	// vfs_spiffs_register();
     	tft_fg = TFT_RED;
     	TFT_print("SPIFFS not mounted !", CENTER, LASTY+TFT_getfontheight()+2);
-    }
-    else {
-    	tft_fg = TFT_GREEN;
-    	TFT_print("SPIFFS Mounted.", CENTER, LASTY+TFT_getfontheight()+2);
-    }
+
 
 	Wait(-2000);
 

@@ -1,0 +1,37 @@
+{
+    "search.exclude": {
+        "**/build": true
+    },
+    
+    "idf.portWin": "COM8",
+    "idf.flashType": "UART",
+    "idf.adapterTargetName": "esp32",
+    "idf.openOcdConfigs": [
+        "board/esp32-bridge.cfg"
+    ],
+    "editor.formatOnType": false,
+
+    "astyle.additional_languages": [
+        "c",
+        "cpp",
+    ],
+    "astyle.cmd_options": [
+        "--style=1tbs", 	// see http://astyle.sourceforge.net/astyle.html
+                 "--indent=spaces=4", // indent 4 spaces
+        "--convert-tabs",
+        "--align-pointer=name",
+        "--align-reference=name",
+        "--keep-one-line-statements",
+        "--pad-header",
+        "--pad-oper",                    // insert a space at both ends of the // operator
+    ],
+    "nrf-connect.toolchain.path": "${nrf-connect.toolchain:2.0.0}",
+    "files.associations": {
+        "*.ulp": "c",
+        "cc_conf.h": "c",
+        "smode_rf_settings.h": "c",
+        "logc.h": "c",
+        "3outof6.h": "c",
+        "esp_system.h": "c"
+    },
+}

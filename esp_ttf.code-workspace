@@ -1,0 +1,34 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"astyle.additional_languages": [
+			"c",
+			"cpp"
+		],
+		"astyle.cmd_options": [
+			"--style=1tbs",
+			"--indent=spaces=4",
+			"--convert-tabs",
+			"--align-pointer=name",
+			"--align-reference=name",
+			"--keep-one-line-statements",
+			"--pad-header",
+			"--pad-oper"
+		],
+		"files.associations": {
+			"*.h": "c",
+			"*.c": "c"
+		},
+		"extensions": {
+			"recommendations": [
+				"espressif.esp-idf-extension",
+				"ms-vscode.cpptools",
+				"chiehyu.vscode-astyle"
+			]
+		}
+	}
+}
