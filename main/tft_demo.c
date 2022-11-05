@@ -21,6 +21,7 @@
 #include <esp_log.h>
 #include <esp_attr.h>
 #include <esp_ota_ops.h>
+#include "esp_heap_caps.h"
 
 #ifdef CONFIG_EXAMPLE_USE_WIFI
 
@@ -29,7 +30,6 @@
 #include "esp_sntp.h"
 #include "esp_log.h"
 #include "nvs_flash.h"
-#include "esp_heap_caps.h"
 
 #endif
 

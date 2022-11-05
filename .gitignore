@@ -17,7 +17,6 @@ GPATH
 .#*
 \#*#
 
-sdkconfig
 sdkconfig.old
 sdkconfig.lobo
 .cproject
@@ -34,4 +33,3 @@ local/
 *.elf
 *.map
 **/.DS_Store
-mkspiffs/
